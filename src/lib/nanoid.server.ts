@@ -1,4 +1,5 @@
 import { customAlphabet } from 'nanoid';
-import { nolookalikesSafe } from 'nanoid-dictionary';
+import nanoidDictionary from 'nanoid-dictionary';
+const { nolookalikesSafe } = nanoidDictionary;
 
 export const nanoid = customAlphabet(nolookalikesSafe, 12);
