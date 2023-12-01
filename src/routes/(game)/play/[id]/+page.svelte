@@ -12,12 +12,30 @@
 	});
 </script>
 
-{#if $state === 'join'}
-	<Join />
-{:else if $state === 'questions'}
-	<Questions />
-{:else if $state === 'answer'}
-	<Answer />
-{:else if $state === 'results'}
-	<Results />
-{/if}
+<main>
+	{#if $state === 'join'}
+		<Join />
+	{:else if $state === 'questions'}
+		<Questions />
+	{:else if $state === 'answer'}
+		<Answer />
+	{:else if $state === 'results'}
+		<Results />
+	{/if}
+</main>
+
+<style lang="scss">
+	@use '../../variables.scss' as variables;
+
+	main {
+		display: flex;
+		flex-direction: column-reverse;
+		min-height: 100vh;
+		min-height: 100svh;
+		max-width: variables.$column-wdith;
+		margin: auto;
+		box-sizing: border-box;
+		padding: 24px 16px;
+		gap: 16px variables.$gap;
+	}
+</style>
