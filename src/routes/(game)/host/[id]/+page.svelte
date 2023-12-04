@@ -12,17 +12,15 @@
 	});
 </script>
 
-<main>
-	{#if $state === 'join'}
-		<Join />
-	{:else if $state === 'questions'}
-		<Questions />
-	{:else if $state === 'answer'}
-		<Answer />
-	{:else if $state === 'results'}
-		<Results />
-	{/if}
-</main>
+{#if $state === 'join'}
+	<Join />
+{:else if $state === 'questions'}
+	<Questions />
+{:else if $state === 'answer'}
+	<Answer />
+{:else if $state === 'results'}
+	<Results />
+{/if}
 
 <style lang="scss">
 	@use '../../variables.scss' as variables;
@@ -32,13 +30,13 @@
 		flex-direction: column;
 		box-sizing: border-box;
 		min-height: 100vh;
-		max-width: variables.$column-wdith;
+		max-width: variables.$column-width;
 		margin: auto;
 		padding: 24px 16px;
 		gap: 16px variables.$gap;
 
 		@media (min-width: variables.$breakpoint) {
-			max-width: calc(variables.$column-wdith * 2 + variables.$gap);
+			max-width: calc(variables.$column-width * 2 + variables.$gap);
 			display: grid;
 			grid-template-columns: 1fr 1fr;
 			grid-template-rows: 1fr max-content;

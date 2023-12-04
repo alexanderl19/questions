@@ -32,16 +32,29 @@
 	});
 </script>
 
-<div class="prompts">
-	<h1>Waiting For Prompts</h1>
-</div>
-<div class="end">
-	<span class="countdown">{secondsRemaining}</span>
-	<Button size="large" color="ruby" on:click={end}>End</Button>
-</div>
+<main>
+	<div class="prompts">
+		<h1>Waiting For Prompts</h1>
+	</div>
+	<div class="end">
+		<span class="countdown">{secondsRemaining}</span>
+		<Button size="large" color="ruby" on:click={end}>End</Button>
+	</div>
+</main>
 
 <style lang="scss">
 	@use '../../variables.scss' as variables;
+
+	main {
+		display: flex;
+		flex-direction: column;
+		box-sizing: border-box;
+		min-height: 100vh;
+		max-width: variables.$column-width;
+		margin: auto;
+		padding: 24px 16px;
+		gap: 16px variables.$gap;
+	}
 
 	.prompts {
 		height: 100%;

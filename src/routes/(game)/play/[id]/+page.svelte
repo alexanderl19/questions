@@ -32,7 +32,7 @@
 		flex-direction: column-reverse;
 		min-height: 100vh;
 		min-height: 100svh;
-		max-width: variables.$column-wdith;
+		max-width: variables.$column-width;
 		margin: auto;
 		box-sizing: border-box;
 		padding: 24px 16px;

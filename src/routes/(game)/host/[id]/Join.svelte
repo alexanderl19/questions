@@ -54,38 +54,58 @@
 	};
 </script>
 
-<div class="join">
-	<div class="qr">
-		{@html qrSvg}
-	</div>
-	<button class="copy" on:click={copy}>
-		<span>{$page.params.id}</span>
-		<div class="icon" class:success={copyState === 'success'} class:fail={copyState === 'fail'}>
-			{#if copyState === undefined}
-				<Copy size={16} />
-			{:else if copyState === 'success'}
-				<Check size={16} />
-			{:else if copyState === 'fail'}
-				<X size={16} />
-			{/if}
+<main>
+	<div class="join">
+		<div class="qr">
+			{@html qrSvg}
 		</div>
-	</button>
-</div>
+		<button class="copy" on:click={copy}>
+			<span>{$page.params.id}</span>
+			<div class="icon" class:success={copyState === 'success'} class:fail={copyState === 'fail'}>
+				{#if copyState === undefined}
+					<Copy size={16} />
+				{:else if copyState === 'success'}
+					<Check size={16} />
+				{:else if copyState === 'fail'}
+					<X size={16} />
+				{/if}
+			</div>
+		</button>
+	</div>
 
-<div class="players">
-	<ul>
-		{#each playersArray as [id, name] (id)}
-			<li>{name}</li>
-		{/each}
-	</ul>
-</div>
+	<div class="players">
+		<ul>
+			{#each playersArray as [id, name] (id)}
+				<li>{name}</li>
+			{/each}
+		</ul>
+	</div>
 
-<div class="start">
-	<Button color="ruby" size="large" on:click={start}>Everyone's in!</Button>
-</div>
+	<div class="start">
+		<Button color="ruby" size="large" on:click={start}>Everyone's in!</Button>
+	</div>
+</main>
 
 <style lang="scss">
 	@use '../../variables.scss' as variables;
+
+	main {
+		display: flex;
+		flex-direction: column;
+		box-sizing: border-box;
+		min-height: 100vh;
+		max-width: variables.$column-width;
+		margin: auto;
+		padding: 24px 16px;
+		gap: 16px variables.$gap;
+
+		@media (min-width: variables.$breakpoint) {
+			max-width: calc(variables.$column-width * 2 + variables.$gap);
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-template-rows: 1fr max-content;
+		}
+	}
 
 	.join {
 		display: flex;
