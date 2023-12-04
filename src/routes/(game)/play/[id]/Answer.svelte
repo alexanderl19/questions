@@ -20,7 +20,7 @@
 			<div class="options">
 				{#each $answerState.players as [id, name]}
 					<label>
-						<input type="radio" name="contact" value={id} bind:group={answer} />
+						<input type="radio" name="contact" value={id} bind:group={answer} on:change={submit} />
 						<span>{name}</span>
 					</label>
 				{/each}
