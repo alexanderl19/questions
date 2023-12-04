@@ -1,19 +1,9 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { resultsState } from '$lib/state';
-
-	const next = async () => {
-		await fetch(`/api/games/${$page.params.id}/answer`, {
-			method: 'PUT',
-			body: JSON.stringify({
-				newQuestion: $resultsState.questionNumber + 1
-			})
-		});
-	};
+	import { resultsState, players } from '$lib/state';
 </script>
 
 Question: {$resultsState.question}
 
-{$resultsState.results}
-
-<button on:click={next}>Next</button>
+{#each $resultsState.results as [player, voteCount]}
+	{$players.get(player)} {voteCount}
+{/each}

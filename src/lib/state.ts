@@ -21,6 +21,8 @@ export const joinChannel = async (id: string) => {
 						question: serverMessage.data.question,
 						players: serverMessage.data.players
 					});
+
+					players.set(new Map(serverMessage.data.players));
 				}
 
 				if (serverMessage.data.state === 'results') {
@@ -29,6 +31,8 @@ export const joinChannel = async (id: string) => {
 						question: serverMessage.data.question,
 						results: serverMessage.data.results
 					});
+
+					players.set(new Map(serverMessage.data.players));
 				}
 			}
 		}
@@ -40,5 +44,6 @@ export const answerState = writable<{ question: string; players: [string, string
 export const resultsState = writable<{
 	questionNumber: number;
 	question: string;
-	results: [string, string][];
+	results: [string, number][];
 }>();
+export const players = writable<Map<string, string>>(new Map());

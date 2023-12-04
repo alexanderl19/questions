@@ -18,11 +18,17 @@ export const PUT: RequestHandler = async ({ params }) => {
 		answers.set(clientId, data);
 	}
 
+	const answersAggregate = new Map<string, number>([]);
+	answers.forEach((player) => {
+		answersAggregate.set(player, (answersAggregate.get(player) ?? 0) + 1);
+	});
+
 	await receiveChannel.publish('update', {
 		state: 'results',
 		questionNumber: upstashState.question,
 		question: upstashState.questions[upstashState.question][1],
-		results: Array.from(answers.entries())
+		players: upstashState.players,
+		results: Array.from(answersAggregate.entries())
 	});
 
 	return json({});

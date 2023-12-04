@@ -19,7 +19,8 @@ export const ServerMessage = z.object({
 			state: z.literal('results'),
 			questionNumber: z.number(),
 			question: z.string(),
-			results: z.array(z.tuple([z.string(), z.string()]))
+			players: z.array(z.tuple([z.string(), z.string()])),
+			results: z.array(z.tuple([z.string(), z.number()]))
 		})
 	])
 });
