@@ -41,6 +41,8 @@
 </div>
 
 <style lang="scss">
+	@use '../../variables.scss' as variables;
+
 	.prompts {
 		height: 100%;
 		position: relative;
@@ -48,6 +50,10 @@
 		align-items: center;
 		justify-content: center;
 		flex-grow: 1;
+
+		@media (min-width: variables.$breakpoint) {
+			grid-column: 1 / span 2;
+		}
 
 		h1 {
 			position: absolute;
@@ -59,6 +65,7 @@
 	}
 
 	.end {
+		--width: 100%;
 		display: grid;
 		grid-template-rows: max-content max-content;
 		gap: 12px;
@@ -69,6 +76,8 @@
 			font-weight: 500;
 		}
 
-		--width: 100%;
+		@media (min-width: variables.$breakpoint) {
+			grid-column: 1 / span 2;
+		}
 	}
 </style>
