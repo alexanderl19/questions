@@ -81,7 +81,7 @@
 </div>
 
 <div class="start">
-	<Button --width="100%" on:click={start}>Everyone's in!</Button>
+	<Button color="ruby" size="large" on:click={start}>Everyone's in!</Button>
 </div>
 
 <style lang="scss">
@@ -168,6 +168,7 @@
 	.start {
 		grid-column: 1;
 		grid-row: 3;
+		--width: 100%;
 
 		@media (min-width: variables.$breakpoint) {
 			grid-column: 2;

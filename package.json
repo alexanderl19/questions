@@ -36,6 +36,7 @@
 		"@upstash/redis": "^1.25.1",
 		"ably": "1.2.48",
 		"autoprefixer": "^10.4.16",
+		"clsx": "^2.0.0",
 		"lucide-svelte": "^0.294.0",
 		"nanoid": "^5.0.3",
 		"nanoid-dictionary": "^4.3.0",
