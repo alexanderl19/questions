@@ -28,16 +28,20 @@
 	@use '../../variables.scss' as variables;
 
 	main {
-		display: grid;
+		display: flex;
+		flex-direction: column;
+		box-sizing: border-box;
+		min-height: 100vh;
 		max-width: variables.$column-wdith;
-		grid-template-columns: 1fr;
-		margin: 24px auto;
-		padding: 0 16px;
+		margin: auto;
+		padding: 24px 16px;
 		gap: 16px variables.$gap;
 
 		@media (min-width: variables.$breakpoint) {
 			max-width: calc(variables.$column-wdith * 2 + variables.$gap);
+			display: grid;
 			grid-template-columns: 1fr 1fr;
+			grid-template-rows: 1fr max-content;
 		}
 	}
 </style>
