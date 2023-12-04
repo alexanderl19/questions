@@ -18,7 +18,7 @@
 
 	onMount(() => {
 		const channel = subscribe.channels.get(`game:${$page.params.id}:receive`);
-		channel.presence.subscribe(['enter', 'present'], (player) => {
+		channel.presence.subscribe(['enter', 'present', 'update'], (player) => {
 			players.set(player.clientId, player.data);
 			playersArray = Array.from(players.entries());
 		});
