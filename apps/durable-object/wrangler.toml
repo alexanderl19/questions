@@ -1,9 +1,10 @@
 name = "durable-objects-counter"
 compatibility_date = "2022-02-12"
 
-[durable_objects]
-bindings = [{name = "COUNTER", class_name = "Counter"}]
+[[durable_objects.bindings]]
+name = "GAME"
+class_name = "Game"
 
 [[migrations]]
-tag = "v1" # Should be unique for each entry
-new_classes = ["Counter"]
+tag = "v1"
+new_classes = ["Game"]
