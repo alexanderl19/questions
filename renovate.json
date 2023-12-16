@@ -2,5 +2,22 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
+  ],
+  "prHourlyLimit": 4,
+  "rangeStrategy": "pin",
+  "lockFileMaintenance": {
+    "automerge": true
+  },
+  "patch": {
+    "automerge": true
+  },
+  "separateMinorPatch": true,
+  "packageRules": [
+    {
+      "matchDepTypes": [
+        "engines"
+      ],
+      "rangeStrategy": "replace"
+    },
   ]
 }
