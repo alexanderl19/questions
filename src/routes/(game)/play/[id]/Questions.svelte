@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { publish } from '$lib/ably';
 	import { movable } from '@svelte-put/movable';
-	import { ArrowUp, Hand, Grab, Send } from 'lucide-svelte';
+	import { ArrowUp, Hand, Grab, Send, Check } from 'lucide-svelte';
 	import { onDestroy } from 'svelte';
 
 	let question = '';
@@ -12,8 +12,10 @@
 	let submitted = false;
 
 	const submit = async () => {
-		const channel = publish.channels.get(`game:${$page.params.id}:send`);
-		await channel.publish('question', question);
+		if (!submitted) {
+			const sendChannel = publish.channels.get(`game:${$page.params.id}:send`);
+			await sendChannel.publish('question', question);
+		}
 	};
 
 	let cardPositionTimeout: NodeJS.Timeout;
@@ -44,30 +46,38 @@
 	class="card"
 	class:not-moving={!moving}
 	bind:this={card}
-	use:movable={{ handle }}
+	use:movable={{ handle, enabled: !submitted }}
 	on:movablestart={movablestart}
 	on:movableend={movableend}
 >
 	<form on:submit|preventDefault={submit}>
 		<label>
 			<span>Create A Prompt</span>
-			<textarea bind:value={question} rows="10" />
+			<textarea bind:value={question} disabled={submitted} rows="10" />
 		</label>
 	</form>
 	<div class="handle" bind:this={handle}>
-		<span class="info">
-			{#if moving}
-				<Grab size={12} />
-			{:else}
-				<Hand size={12} />
-			{/if}
-			<span>Drag</span>
-			<ArrowUp size={12} />
-			<span>Up To</span>
-			<Send size={12} />
-			<span>Submit</span>
-		</span>
-		<div class="texture" />
+		{#if !submitted}
+			<span class="info">
+				{#if moving}
+					<Grab size={12} />
+				{:else}
+					<Hand size={12} />
+				{/if}
+				<span>Drag</span>
+				<ArrowUp size={12} />
+				<span>Up To</span>
+				<Send size={12} />
+				<span>Submit</span>
+			</span>
+		{:else}
+			<span class="info">
+				<Check size={12} />
+				<span>Submitted</span>
+			</span>
+		{/if}
+
+		<div class="texture" class:green={submitted} />
 	</div>
 </div>
 
@@ -115,6 +125,10 @@
 			background-size: 12px 12px;
 			background-position: top center;
 			mask: radial-gradient(ellipse at center top, black 0, transparent 95%);
+
+			&.green {
+				background-image: radial-gradient(var(--green-9) 1px, transparent 0);
+			}
 		}
 	}
 
