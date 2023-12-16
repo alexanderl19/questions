@@ -1,35 +1,137 @@
 import { Hono } from "hono";
+import z from "zod";
+import {
+  type InternalGameState,
+  type MutateGameStateFunction,
+  type WebSocketMessageServerToClient,
+  WebSocketMessageClientToServer,
+} from "./types";
+import { createId } from "@paralleldrive/cuid2";
+
+const serverToClient = (message: WebSocketMessageServerToClient) =>
+  JSON.stringify(message);
 
 export class Game {
-  value: number = 0;
   state: DurableObjectState;
   app: Hono = new Hono();
+  getGameState: <K extends keyof InternalGameState>(
+    key: K
+  ) => Promise<InternalGameState[K]>;
+  putGameState: <K extends keyof InternalGameState>(
+    key: K,
+    value: InternalGameState[K]
+  ) => Promise<InternalGameState[K]>;
+  mutateGameState: <K extends keyof InternalGameState>(
+    key: K,
+    fn: MutateGameStateFunction<K>
+  ) => ReturnType<typeof this.putGameState<K>>;
 
   constructor(state: DurableObjectState) {
     this.state = state;
+    this.getGameState = async <K extends keyof InternalGameState>(key: K) =>
+      (await this.state.storage.get<InternalGameState[K]>(
+        "game-state-" + key
+      ))!;
+    this.putGameState = async <K extends keyof InternalGameState>(
+      key: K,
+      value: InternalGameState[K]
+    ) =>
+      (await this.state.storage.put<InternalGameState[K]>(
+        "game-state-" + key,
+        value
+      ))!;
+    this.mutateGameState = async <K extends keyof InternalGameState>(
+      key: K,
+      fn: MutateGameStateFunction<K>
+    ) => {
+      return this.putGameState(key, await fn(await this.getGameState(key)));
+    };
+
     this.state.blockConcurrencyWhile(async () => {
-      const stored = await this.state.storage?.get<number>("value");
-      this.value = stored || 0;
+      await this.putGameState("stage", "lobby");
+      await this.putGameState("players", new Map());
+      await this.putGameState("prompts", new Map());
+      await this.putGameState("respones", new Map());
     });
 
-    this.app.get("/increment", async (c) => {
-      const currentValue = ++this.value;
-      await this.state.storage?.put("value", this.value);
-      return c.text(currentValue.toString());
-    });
+    this.app.get("/ws", async (c) => {
+      const upgradeHeader = c.req.header("Upgrade");
+      if (upgradeHeader !== "websocket") {
+        return c.text("Expected websocket", 400);
+      }
 
-    this.app.get("/decrement", async (c) => {
-      const currentValue = --this.value;
-      await this.state.storage?.put("value", this.value);
-      return c.text(currentValue.toString());
-    });
+      const [client, server] = Object.values(new WebSocketPair());
+      await this.handleSession(server);
 
-    this.app.get("/", async (c) => {
-      return c.text(this.value.toString());
+      return c.body(null, {
+        status: 101,
+        webSocket: client,
+      });
     });
   }
 
   async fetch(request: Request) {
     return this.app.fetch(request);
   }
+
+  async handleSession(webSocket: WebSocket) {
+    this.state.acceptWebSocket(webSocket);
+  }
+
+  async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
+    let parsedMessage: z.infer<typeof WebSocketMessageClientToServer>;
+
+    try {
+      if (typeof message !== "string")
+        throw new Error("Message types other than string are not supported.");
+
+      const safeParsedMessage = WebSocketMessageClientToServer.safeParse(
+        JSON.parse(message)
+      );
+      if (safeParsedMessage.success === false)
+        throw new Error("Failed to parse message.");
+      parsedMessage = safeParsedMessage.data;
+    } catch (e) {
+      ws.send(
+        serverToClient({
+          type: "error",
+          message: e,
+        })
+      );
+      return;
+    }
+
+    switch (parsedMessage.type) {
+      case "hello": {
+        const playerId = createId();
+        const playerSecret = createId();
+        const name = parsedMessage.name;
+
+        this.mutateGameState("players", async (old) =>
+          old.set(playerId, {
+            name,
+            secret: playerSecret,
+          })
+        );
+
+        ws.send(
+          serverToClient({
+            type: "hello",
+            id: playerId,
+            secret: playerSecret,
+          })
+        );
+        break;
+      }
+    }
+  }
+
+  async webSocketClose(
+    ws: WebSocket,
+    code: number,
+    reason: string,
+    wasClean: false
+  ) {}
+
+  async webSocketError(ws: WebSocket, error: unknown) {}
 }
