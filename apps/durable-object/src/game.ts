@@ -111,9 +111,11 @@ export class Game {
           old.set(playerId, {
             name,
             secret: playerSecret,
+            connected: true,
           })
         );
 
+        ws.serializeAttachment(playerId);
         ws.send(
           serverToClient({
             type: "hello",
@@ -123,6 +125,45 @@ export class Game {
         );
         break;
       }
+      case "reconnect": {
+        const { id, secret } = parsedMessage;
+
+        const player = (await this.getGameState("players")).get(id);
+        if (!player) {
+          ws.send(
+            serverToClient({
+              type: "reconnect",
+              success: false,
+              reason: "id",
+            })
+          );
+        } else if (player.secret !== secret) {
+          ws.send(
+            serverToClient({
+              type: "reconnect",
+              success: false,
+              reason: "secret",
+            })
+          );
+        } else {
+          ws.serializeAttachment(id);
+          ws.send(
+            serverToClient({
+              type: "reconnect",
+              success: true,
+              name: player.name,
+            })
+          );
+          this.mutateGameState("players", async (old) =>
+            old.set(id, {
+              name: player.name,
+              secret: player.secret,
+              connected: true,
+            })
+          );
+        }
+        break;
+      }
     }
   }
 
@@ -130,8 +171,29 @@ export class Game {
     ws: WebSocket,
     code: number,
     reason: string,
-    wasClean: false
-  ) {}
+    wasClean: boolean
+  ) {
+    const id: string | undefined = ws.deserializeAttachment();
+
+    if (id) {
+      const players = await this.getGameState("players");
+      const player = players.get(id);
+      if (!player) {
+        console.warn(
+          "WebSocket closed with id, but player with that id does not exist."
+        );
+        return;
+      }
+      this.putGameState(
+        "players",
+        players.set(id, {
+          name: player.name,
+          secret: player.secret,
+          connected: false,
+        })
+      );
+    }
+  }
 
   async webSocketError(ws: WebSocket, error: unknown) {}
 }

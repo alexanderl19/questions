@@ -2,7 +2,7 @@ import z from "zod";
 
 export type InternalGameState = {
   stage: "lobby" | "write" | "respond" | "results";
-  players: Map<string, { name: string; secret: string }>;
+  players: Map<string, { name: string; secret: string; connected: boolean }>;
   // Map<userId, prompt>
   prompts: Map<string, string>;
   // Map<promptUserId, Map<respondentUserId, selectedUserId>>
@@ -19,7 +19,9 @@ export const WebSocketMessageClientToServer = z.union([
     name: z.string(),
   }),
   z.object({
-    type: z.literal(""),
+    type: z.literal("reconnect"),
+    id: z.string(),
+    secret: z.string(),
   }),
 ]);
 
@@ -32,6 +34,16 @@ export type WebSocketMessageServerToClient =
       type: "hello";
       id: string;
       secret: string;
+    }
+  | {
+      type: "reconnect";
+      success: true;
+      name: string;
+    }
+  | {
+      type: "reconnect";
+      success: false;
+      reason: "id" | "secret";
     }
   | {
       type: "state-players";
