@@ -195,5 +195,7 @@ export class Game {
     }
   }
 
-  async webSocketError(ws: WebSocket, error: unknown) {}
+  async webSocketError(ws: WebSocket, error: unknown) {
+    console.error("WebSocket errored with message: " + error);
+  }
 }
