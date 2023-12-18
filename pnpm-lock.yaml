@@ -52,8 +52,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       lucide-svelte:
-        specifier: 0.297.0
-        version: 0.297.0(svelte@4.2.8)
+        specifier: 0.298.0
+        version: 0.298.0(svelte@4.2.8)
       nanoid:
         specifier: 5.0.4
         version: 5.0.4
@@ -2121,8 +2121,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /lucide-svelte@0.297.0(svelte@4.2.8):
-    resolution: {integrity: sha512-D2JouMIE5myXwkc3ODalWR/4QIJTb1VbZIoXyisMU/K2Ada7XBdQdNkYRI8sgfdCysf4JF79W0YjWNcMyXNH6Q==}
+  /lucide-svelte@0.298.0(svelte@4.2.8):
+    resolution: {integrity: sha512-7xYNSMY1z1QMjLe8GWToFtFh0lvTsrxdgEAXMite/Urn9tPD16Xk3597ibpgt9Ff7IBb/ArMc3y3ZKofZhs8fQ==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
