@@ -63,7 +63,7 @@ export class Game {
       const [client, server] = Object.values(new WebSocketPair());
       await this.handleSession(server);
 
-      return c.body(null, {
+      return new Response(null, {
         status: 101,
         webSocket: client,
       });
