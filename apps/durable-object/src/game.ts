@@ -164,6 +164,31 @@ export class Game {
         }
         break;
       }
+      case "prompt": {
+        const { prompt } = parsedMessage;
+        const id: string | undefined = ws.deserializeAttachment();
+
+        if (id) {
+          this.mutateGameState("prompts", async (old) => old.set(id, prompt));
+
+          ws.send(
+            serverToClient({
+              type: "prompts",
+              success: true,
+            })
+          );
+        } else {
+          ws.send(
+            serverToClient({
+              type: "prompts",
+              success: false,
+              reason: "Could not identify WebSocket.",
+            })
+          );
+        }
+
+        break;
+      }
     }
   }
 

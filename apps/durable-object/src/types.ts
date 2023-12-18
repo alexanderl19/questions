@@ -23,6 +23,10 @@ export const WebSocketMessageClientToServer = z.union([
     id: z.string(),
     secret: z.string(),
   }),
+  z.object({
+    type: z.literal("prompt"),
+    prompt: z.string(),
+  }),
 ]);
 
 export type WebSocketMessageServerToClient =
@@ -44,6 +48,15 @@ export type WebSocketMessageServerToClient =
       type: "reconnect";
       success: false;
       reason: "id" | "secret";
+    }
+  | {
+      type: "prompts";
+      success: false;
+      reason: string;
+    }
+  | {
+      type: "prompts";
+      success: true;
     }
   | {
       type: "state-players";
