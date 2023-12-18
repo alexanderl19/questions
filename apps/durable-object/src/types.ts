@@ -27,6 +27,11 @@ export const WebSocketMessageClientToServer = z.union([
     type: z.literal("prompt"),
     prompt: z.string(),
   }),
+  z.object({
+    type: z.literal("respond"),
+    promptId: z.string(),
+    respone: z.string(),
+  }),
 ]);
 
 export type WebSocketMessageServerToClient =
@@ -56,6 +61,15 @@ export type WebSocketMessageServerToClient =
     }
   | {
       type: "prompts";
+      success: true;
+    }
+  | {
+      type: "respond";
+      success: false;
+      reason: string;
+    }
+  | {
+      type: "respond";
       success: true;
     }
   | {

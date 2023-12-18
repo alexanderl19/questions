@@ -189,6 +189,49 @@ export class Game {
 
         break;
       }
+      case "respond": {
+        const { promptId, respone } = parsedMessage;
+
+        const id: string | undefined = ws.deserializeAttachment();
+        if (!id) {
+          ws.send(
+            serverToClient({
+              type: "respond",
+              success: false,
+              reason: "Could not identify WebSocket.",
+            })
+          );
+          return;
+        }
+
+        const prompts = await this.getGameState("prompts");
+        if (!prompts.has(promptId)) {
+          ws.send(
+            serverToClient({
+              type: "respond",
+              success: false,
+              reason: "Invalid prompt id.",
+            })
+          );
+          return;
+        }
+
+        const players = await this.getGameState("players");
+        if (!players.has(respone)) {
+          ws.send(
+            serverToClient({
+              type: "respond",
+              success: false,
+              reason: "Invalid respone player id.",
+            })
+          );
+          return;
+        }
+
+        await this.mutateGameState("respones", (old) =>
+          old.set(promptId, (old.get(promptId) ?? new Map()).set(id, respone))
+        );
+      }
     }
   }
 
