@@ -9,7 +9,7 @@ importers:
   .:
     devDependencies:
       prettier:
-        specifier: ^3.1.0
+        specifier: 3.1.0
         version: 3.1.0
       turbo:
         specifier: 1.11.2
@@ -18,11 +18,11 @@ importers:
   apps/durable-object:
     dependencies:
       hono:
-        specifier: ^3.11.7
+        specifier: 3.11.7
         version: 3.11.7
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ^4.20231121.0
+        specifier: 4.20231121.0
         version: 4.20231121.0
       wrangler:
         specifier: 3.17.1
@@ -31,86 +31,86 @@ importers:
   apps/web:
     dependencies:
       '@radix-ui/colors':
-        specifier: ^3.0.0
+        specifier: 3.0.0
         version: 3.0.0
       '@upstash/redis':
-        specifier: ^1.25.1
+        specifier: 1.25.2
         version: 1.25.2
       ably:
         specifier: 1.2.48
         version: 1.2.48
       autoprefixer:
-        specifier: ^10.4.16
+        specifier: 10.4.16
         version: 10.4.16(postcss@8.4.31)
       clsx:
-        specifier: ^2.0.0
+        specifier: 2.0.0
         version: 2.0.0
       lucide-svelte:
-        specifier: ^0.297.0
+        specifier: 0.297.0
         version: 0.297.0(svelte@4.2.8)
       nanoid:
-        specifier: ^5.0.3
+        specifier: 5.0.4
         version: 5.0.4
       nanoid-dictionary:
-        specifier: ^4.3.0
+        specifier: 4.3.0
         version: 4.3.0
       qrcode-generator:
-        specifier: ^1.4.4
+        specifier: 1.4.4
         version: 1.4.4
       zod:
-        specifier: ^3.22.4
+        specifier: 3.22.4
         version: 3.22.4
     devDependencies:
       '@svelte-put/movable':
-        specifier: ^3.1.0
+        specifier: 3.1.0
         version: 3.1.0
       '@sveltejs/adapter-vercel':
-        specifier: ^3.1.0
+        specifier: 3.1.0
         version: 3.1.0(@sveltejs/kit@1.30.3)
       '@sveltejs/kit':
-        specifier: ^1.27.4
+        specifier: 1.30.3
         version: 1.30.3(svelte@4.2.8)(vite@4.5.1)
       '@types/nanoid-dictionary':
-        specifier: ^4.2.3
+        specifier: 4.2.3
         version: 4.2.3
       '@typescript-eslint/eslint-plugin':
-        specifier: ^6.0.0
+        specifier: 6.11.0
         version: 6.11.0(@typescript-eslint/parser@6.11.0)(eslint@8.54.0)(typescript@5.2.2)
       '@typescript-eslint/parser':
-        specifier: ^6.0.0
+        specifier: 6.11.0
         version: 6.11.0(eslint@8.54.0)(typescript@5.2.2)
       eslint:
-        specifier: ^8.28.0
+        specifier: 8.54.0
         version: 8.54.0
       eslint-config-prettier:
-        specifier: ^9.0.0
+        specifier: 9.0.0
         version: 9.0.0(eslint@8.54.0)
       eslint-plugin-svelte:
-        specifier: ^2.30.0
+        specifier: 2.35.1
         version: 2.35.1(eslint@8.54.0)(svelte@4.2.8)
       prettier:
-        specifier: ^3.1.0
+        specifier: 3.1.0
         version: 3.1.0
       prettier-plugin-svelte:
-        specifier: ^3.0.0
+        specifier: 3.1.2
         version: 3.1.2(prettier@3.1.0)(svelte@4.2.8)
       sass:
-        specifier: ^1.69.5
+        specifier: 1.69.5
         version: 1.69.5
       svelte:
-        specifier: ^4.2.7
+        specifier: 4.2.8
         version: 4.2.8
       svelte-check:
-        specifier: ^3.6.0
+        specifier: 3.6.2
         version: 3.6.2(postcss@8.4.31)(sass@1.69.5)(svelte@4.2.8)
       tslib:
-        specifier: ^2.4.1
+        specifier: 2.6.2
         version: 2.6.2
       typescript:
-        specifier: ^5.0.0
+        specifier: 5.2.2
         version: 5.2.2
       vite:
-        specifier: ^4.4.2
+        specifier: 4.5.1
         version: 4.5.1(sass@1.69.5)
 
 packages:
@@ -1358,7 +1358,7 @@ packages:
     dev: true
 
   /concat-map@0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
   /console-control-strings@1.1.0:
