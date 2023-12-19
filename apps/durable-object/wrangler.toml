@@ -1,6 +1,9 @@
 name = "durable-objects-counter"
 compatibility_date = "2022-02-12"
 
+[dev]
+port = 3000
+
 [[durable_objects.bindings]]
 name = "GAME"
 class_name = "Game"

@@ -5,7 +5,7 @@ import {
   type MutateGameStateFunction,
   type WebSocketMessageServerToClient,
   WebSocketMessageClientToServer,
-} from "./types";
+} from "types";
 import { createId } from "@paralleldrive/cuid2";
 
 const serverToClient = (message: WebSocketMessageServerToClient) =>

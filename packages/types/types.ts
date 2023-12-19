@@ -32,6 +32,15 @@ export const WebSocketMessageClientToServer = z.union([
     promptId: z.string(),
     respone: z.string(),
   }),
+  z.object({
+    type: z.literal("stage-write"),
+  }),
+  z.object({
+    type: z.literal("stage-respond"),
+  }),
+  z.object({
+    type: z.literal("stage-results"),
+  }),
 ]);
 
 export type WebSocketMessageServerToClient =

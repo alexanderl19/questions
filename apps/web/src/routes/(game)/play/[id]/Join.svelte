@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { subscribe } from '$lib/ably';
+	import { send } from '$lib/client';
 	import Button from '$lib/components/Button.svelte';
 
 	let name = '';
 
 	const join = () => {
-		const channel = subscribe.channels.get(`game:${$page.params.id}:receive`);
-		channel.presence.update(name);
+		send('hello', { name });
 	};
 </script>
 

@@ -32,15 +32,16 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@macfja/svelte-persistent-store": "^2.4.1",
 		"@radix-ui/colors": "3.0.0",
 		"@upstash/redis": "1.25.2",
-		"ably": "1.2.48",
 		"autoprefixer": "10.4.16",
 		"clsx": "2.0.0",
 		"lucide-svelte": "0.298.0",
 		"nanoid": "5.0.4",
 		"nanoid-dictionary": "4.3.0",
 		"qrcode-generator": "1.4.4",
+		"types": "workspace:*",
 		"zod": "3.22.4"
 	}
 }
