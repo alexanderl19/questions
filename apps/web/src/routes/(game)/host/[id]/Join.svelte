@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { subscribe } from '$lib/ably';
 	import qrcode from 'qrcode-generator';
 	import { Copy, Check, X } from 'lucide-svelte';
 	import Button from '$lib/components/Button.svelte';
+	import { players } from '$lib/client';
 
 	const url = new URL(`/play/${$page.params.id}`, $page.url);
 
@@ -12,21 +11,6 @@
 	qr.addData(url.toString());
 	qr.make();
 	const qrSvg = qr.createSvgTag({ margin: 0, scalable: true });
-
-	let players = new Map<string, string>([]);
-	let playersArray = Array.from(players.entries());
-
-	onMount(() => {
-		const channel = subscribe.channels.get(`game:${$page.params.id}:receive`);
-		channel.presence.subscribe(['enter', 'present', 'update'], (player) => {
-			players.set(player.clientId, player.data);
-			playersArray = Array.from(players.entries());
-		});
-		channel.presence.subscribe('leave', (player) => {
-			players.delete(player.clientId);
-			playersArray = Array.from(players.entries());
-		});
-	});
 
 	let resetCopyIconTimeout: NodeJS.Timeout;
 	let copyState: 'success' | 'fail' | undefined;
@@ -75,7 +59,7 @@
 
 	<div class="players">
 		<ul>
-			{#each playersArray as [id, name] (id)}
+			{#each $players as [id, name] (id)}
 				<li>{name}</li>
 			{/each}
 		</ul>

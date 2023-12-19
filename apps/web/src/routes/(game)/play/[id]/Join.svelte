@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { send } from '$lib/client';
+	import { playerData, send } from '$lib/client';
 	import Button from '$lib/components/Button.svelte';
 
 	let name = '';
 
 	const join = () => {
-		send('hello', { name });
+		send('hello', { name, secret: $playerData?.secret });
 	};
 </script>
 

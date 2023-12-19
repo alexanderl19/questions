@@ -2,11 +2,12 @@ import { websocket } from '$lib/websocket';
 import { persist, createLocalStorage } from '@macfja/svelte-persistent-store';
 import { writable } from 'svelte/store';
 
-const playerData = persist(
+export const playerData = persist(
 	writable<{ id: string; secret: string } | undefined>(),
 	createLocalStorage(),
 	'player-data'
 );
+export const players = writable<[id: string, name: string][]>([]);
 
 export const { connect, send, close } = websocket((message) => {
 	switch (message.type) {
@@ -25,6 +26,7 @@ export const { connect, send, close } = websocket((message) => {
 		case 'respond':
 			break;
 		case 'state-players':
+			players.set(message.players);
 			break;
 		case 'state-write':
 			break;

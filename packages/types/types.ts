@@ -17,6 +17,7 @@ export const WebSocketMessageClientToServer = z.union([
   z.object({
     type: z.literal("hello"),
     name: z.string(),
+    secret: z.string().optional(),
   }),
   z.object({
     type: z.literal("reconnect"),

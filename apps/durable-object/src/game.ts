@@ -78,6 +78,20 @@ export class Game {
     this.state.acceptWebSocket(webSocket);
   }
 
+  announce(message: WebSocketMessageServerToClient) {
+    this.state
+      .getWebSockets()
+      .forEach((ws) => ws.send(serverToClient(message)));
+  }
+  async announcePlayers() {
+    this.announce({
+      type: "state-players",
+      players: Array.from((await this.getGameState("players")).entries())
+        .filter(([_id, { connected }]) => connected)
+        .map(([id, { name }]) => [id, name]),
+    });
+  }
+
   async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
     let parsedMessage: z.infer<typeof WebSocketMessageClientToServer>;
 
@@ -103,26 +117,60 @@ export class Game {
 
     switch (parsedMessage.type) {
       case "hello": {
-        const playerId = createId();
-        const playerSecret = createId();
-        const name = parsedMessage.name;
+        const id: string | undefined = ws.deserializeAttachment();
+        const { name, secret } = parsedMessage;
 
-        this.mutateGameState("players", async (old) =>
-          old.set(playerId, {
-            name,
-            secret: playerSecret,
-            connected: true,
-          })
-        );
+        if (id) {
+          const player = (await this.getGameState("players")).get(id);
 
-        ws.serializeAttachment(playerId);
-        ws.send(
-          serverToClient({
-            type: "hello",
-            id: playerId,
-            secret: playerSecret,
-          })
-        );
+          if (!player) {
+            ws.send(
+              serverToClient({
+                type: "error",
+                message: "Could not fetch player from id.",
+              })
+            );
+            return;
+          }
+
+          if (secret === player.secret) {
+            await this.mutateGameState("players", async (old) =>
+              old.set(id, {
+                ...player,
+                name,
+              })
+            );
+            this.announcePlayers();
+          } else {
+            ws.send(
+              serverToClient({
+                type: "error",
+                message: "Incorrect secret.",
+              })
+            );
+          }
+        } else {
+          const playerId = createId();
+          const playerSecret = createId();
+
+          await this.mutateGameState("players", async (old) =>
+            old.set(playerId, {
+              name,
+              secret: playerSecret,
+              connected: true,
+            })
+          );
+
+          ws.serializeAttachment(playerId);
+          ws.send(
+            serverToClient({
+              type: "hello",
+              id: playerId,
+              secret: playerSecret,
+            })
+          );
+          this.announcePlayers();
+        }
         break;
       }
       case "reconnect": {
@@ -161,6 +209,7 @@ export class Game {
               connected: true,
             })
           );
+          this.announcePlayers();
         }
         break;
       }
@@ -260,6 +309,7 @@ export class Game {
           connected: false,
         })
       );
+      this.announcePlayers();
     }
   }
 

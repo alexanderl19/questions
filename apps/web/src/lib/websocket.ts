@@ -7,7 +7,7 @@ export const websocket = (listener: (message: WebSocketMessageServerToClient) =>
 	let webSocket: WebSocket | undefined;
 
 	const connect = () => {
-		webSocket = new WebSocket(dev ? 'ws://localhost:3001/ws' : PUBLIC_WEBSOCKET_URL);
+		webSocket = new WebSocket(dev ? 'ws://localhost:3000/ws' : PUBLIC_WEBSOCKET_URL);
 
 		webSocket.onmessage = (event) => {
 			const message: WebSocketMessageServerToClient = JSON.parse(event.data);
