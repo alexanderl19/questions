@@ -74,8 +74,10 @@ export class Game {
     return this.app.fetch(request);
   }
 
-  async handleSession(webSocket: WebSocket) {
-    this.state.acceptWebSocket(webSocket);
+  async handleSession(ws: WebSocket) {
+    this.state.acceptWebSocket(ws);
+
+    ws.send(serverToClient(await this.getStatePlayers()));
   }
 
   announce(message: WebSocketMessageServerToClient) {
@@ -84,13 +86,17 @@ export class Game {
       .forEach((ws) => ws.send(serverToClient(message)));
   }
   async announcePlayers() {
-    this.announce({
-      type: "state-players",
-      players: Array.from((await this.getGameState("players")).entries())
-        .filter(([_id, { connected }]) => connected)
-        .map(([id, { name }]) => [id, name]),
-    });
+    this.announce(await this.getStatePlayers());
   }
+
+  getStatePlayers = async (): Promise<
+    Extract<WebSocketMessageServerToClient, { type: "state-players" }>
+  > => ({
+    type: "state-players",
+    players: Array.from((await this.getGameState("players")).entries())
+      .filter(([_id, { connected }]) => connected)
+      .map(([id, { name }]) => [id, name]),
+  });
 
   async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
     let parsedMessage: z.infer<typeof WebSocketMessageClientToServer>;
