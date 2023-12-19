@@ -8,6 +8,7 @@ export const playerData = persist(
 	'player-data'
 );
 export const players = writable<[id: string, name: string][]>([]);
+export const stage = writable<'lobby' | 'write' | 'respond' | 'results'>('lobby');
 
 export const { connect, send, close } = websocket((message) => {
 	switch (message.type) {
@@ -29,6 +30,7 @@ export const { connect, send, close } = websocket((message) => {
 			players.set(message.players);
 			break;
 		case 'state-write':
+			stage.set('write');
 			break;
 		case 'state-respond':
 			break;

@@ -1,23 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
-	// import { subscribe } from '$lib/ably';
 	import { onMount } from 'svelte';
 
-	const end = async () => {
-		await fetch(`/api/games/${$page.params.id}/state`, {
-			method: 'PUT',
-			body: JSON.stringify({
-				newState: 'answer'
-			})
-		});
-		await fetch(`/api/games/${$page.params.id}/answer`, {
-			method: 'PUT',
-			body: JSON.stringify({
-				newQuestion: 0
-			})
-		});
-	};
+	const end = async () => {};
 
 	let secondsRemaining = 60 * 1.5;
 	onMount(() => {

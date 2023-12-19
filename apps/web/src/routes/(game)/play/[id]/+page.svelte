@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Join from './Join.svelte';
-	// import Questions from './Questions.svelte';
+	import Questions from './Questions.svelte';
 	// import Answer from './Answer.svelte';
 	// import Results from './Results.svelte';
-	import { connect } from '$lib/client';
+	import { connect, stage } from '$lib/client';
 
 	onMount(() => {
 		connect();
@@ -14,15 +14,15 @@
 </script>
 
 <main>
-	<!-- {#if $state === 'join'} -->
-	<Join />
-	<!-- {:else if $state === 'questions'}
+	{#if $stage === 'lobby'}
+		<Join />
+	{:else if $stage === 'write'}
 		<Questions />
-	{:else if $state === 'answer'}
-		<Answer />
-	{:else if $state === 'results'}
-		<Results />
-	{/if} -->
+	{:else if $stage === 'respond'}
+		<!-- <Answer /> -->
+	{:else if $stage === 'results'}
+		<!-- <Results /> -->
+	{/if}
 </main>
 
 <style lang="scss">

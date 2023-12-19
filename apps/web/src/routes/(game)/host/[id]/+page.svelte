@@ -3,10 +3,10 @@
 	import { page } from '$app/stores';
 
 	import Join from './Join.svelte';
-	// import Questions from './Questions.svelte';
+	import Questions from './Questions.svelte';
 	// import Answer from './Answer.svelte';
 	// import Results from './Results.svelte';
-	import { connect } from '$lib/client';
+	import { connect, stage } from '$lib/client';
 
 	onMount(() => {
 		connect();
@@ -15,16 +15,15 @@
 	});
 </script>
 
-<!-- {#if $state === 'join'} -->
-<Join />
-
-<!-- {:else if $state === 'questions'}
+{#if $stage === 'lobby'}
+	<Join />
+{:else if $stage === 'write'}
 	<Questions />
-{:else if $state === 'answer'}
-	<Answer />
-{:else if $state === 'results'}
-	<Results />
-{/if} -->
+{:else if $stage === 'respond'}
+	<!-- <Answer /> -->
+{:else if $stage === 'results'}
+	<!-- <Results /> -->
+{/if}
 
 <style lang="scss">
 	@use '../../variables.scss' as variables;

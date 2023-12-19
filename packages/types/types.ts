@@ -88,8 +88,8 @@ export type WebSocketMessageServerToClient =
     }
   | {
       type: "state-write";
-      typingCount: number;
       promptCount: number;
+      typingCount?: number;
     }
   | {
       type: "state-respond";

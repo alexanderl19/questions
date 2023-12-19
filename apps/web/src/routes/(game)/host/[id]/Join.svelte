@@ -3,7 +3,7 @@
 	import qrcode from 'qrcode-generator';
 	import { Copy, Check, X } from 'lucide-svelte';
 	import Button from '$lib/components/Button.svelte';
-	import { players } from '$lib/client';
+	import { players, send } from '$lib/client';
 
 	const url = new URL(`/play/${$page.params.id}`, $page.url);
 
@@ -29,12 +29,7 @@
 	};
 
 	const start = () => {
-		fetch(`/api/games/${$page.params.id}/state`, {
-			method: 'PUT',
-			body: JSON.stringify({
-				newState: 'questions'
-			})
-		});
+		send('stage-write', {});
 	};
 </script>
 

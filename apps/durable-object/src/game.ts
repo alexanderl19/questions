@@ -224,7 +224,9 @@ export class Game {
         const id: string | undefined = ws.deserializeAttachment();
 
         if (id) {
-          this.mutateGameState("prompts", async (old) => old.set(id, prompt));
+          await this.mutateGameState("prompts", async (old) =>
+            old.set(id, prompt)
+          );
 
           ws.send(
             serverToClient({
@@ -232,6 +234,11 @@ export class Game {
               success: true,
             })
           );
+
+          this.announce({
+            type: "state-write",
+            promptCount: (await this.getGameState("prompts")).size,
+          });
         } else {
           ws.send(
             serverToClient({
@@ -287,6 +294,26 @@ export class Game {
           old.set(promptId, (old.get(promptId) ?? new Map()).set(id, respone))
         );
       }
+      case "stage-write":
+        if ((await this.getGameState("stage")) === "lobby") {
+          await this.putGameState("stage", "write");
+          this.announce({
+            type: "state-write",
+            promptCount: 0,
+          });
+        } else {
+          ws.send(
+            serverToClient({
+              type: "error",
+              message: "Can only change stage to write from lobby.",
+            })
+          );
+        }
+        break;
+      case "stage-respond":
+        break;
+      case "stage-results":
+        break;
     }
   }
 

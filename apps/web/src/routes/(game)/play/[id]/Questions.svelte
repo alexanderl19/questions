@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { publish } from '$lib/ably';
+	import { send } from '$lib/client';
 	import { movable } from '@svelte-put/movable';
 	import { ArrowUp, Hand, Grab, Send, Check } from 'lucide-svelte';
 	import { onDestroy } from 'svelte';
@@ -13,8 +12,8 @@
 
 	const submit = async () => {
 		if (!submitted) {
-			const sendChannel = publish.channels.get(`game:${$page.params.id}:send`);
-			await sendChannel.publish('question', question);
+			send('prompt', { prompt: question });
+			submitted = true;
 		}
 	};
 
@@ -26,7 +25,6 @@
 
 		cardPositionTimeout = setInterval(() => {
 			if (parseInt(card.style.top) < -200 && !submitted) {
-				submitted = true;
 				submit();
 			}
 		}, 50);
