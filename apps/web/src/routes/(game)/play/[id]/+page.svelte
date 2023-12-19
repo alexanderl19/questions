@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Join from './Join.svelte';
-	import Questions from './Questions.svelte';
-	// import Answer from './Answer.svelte';
+	import Lobby from './Lobby.svelte';
+	import Write from './Write.svelte';
+	// import Respond from './Respond.svelte';
 	// import Results from './Results.svelte';
 	import { connect, stage } from '$lib/client';
 
@@ -15,11 +15,11 @@
 
 <main>
 	{#if $stage === 'lobby'}
-		<Join />
+		<Lobby />
 	{:else if $stage === 'write'}
-		<Questions />
+		<Write />
 	{:else if $stage === 'respond'}
-		<!-- <Answer /> -->
+		<!-- <Respond /> -->
 	{:else if $stage === 'results'}
 		<!-- <Results /> -->
 	{/if}
