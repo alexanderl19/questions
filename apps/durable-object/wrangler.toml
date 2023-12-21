@@ -1,4 +1,4 @@
-name = "durable-objects-counter"
+name = "questions-durable-objects"
 compatibility_date = "2022-02-12"
 
 [dev]
