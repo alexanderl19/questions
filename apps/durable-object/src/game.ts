@@ -64,12 +64,8 @@ export class Game {
         "respones",
         (await this.getGameState("respones")) ?? new Map()
       );
-      const currentPromptId = await this.getGameState("currentPromptId");
-      if (currentPromptId)
-        await this.putGameState("currentPromptId", currentPromptId);
-      const currentPromptIndex = await this.getGameState("currentPromptIndex");
-      if (currentPromptIndex)
-        await this.putGameState("currentPromptIndex", currentPromptIndex);
+      await this.putGameState("currentPromptId", "");
+      await this.putGameState("currentPromptIndex", -1);
     });
 
     this.app.get("/:id/ws", async (c) => {
@@ -114,7 +110,7 @@ export class Game {
         }
         case "respond": {
           const promptIndex = await this.getGameState("currentPromptIndex");
-          if (promptIndex === undefined) {
+          if (promptIndex === -1) {
             throw new Error(
               "Stage set to respond, but currentPromptIndex is not set."
             );
@@ -179,7 +175,7 @@ export class Game {
     Extract<WebSocketMessageServerToClient, { type: "state-results" }>
   > {
     const currentPromptIndex = await this.getGameState("currentPromptIndex");
-    if (currentPromptIndex === undefined) {
+    if (currentPromptIndex === -1) {
       throw new Error("currentPromptIndex is not set.");
     }
     const prompts = await this.getGameState("prompts");
@@ -432,7 +428,7 @@ export class Game {
         const currentPromptIndex =
           await this.getGameState("currentPromptIndex");
 
-        if (currentPromptIndex === undefined && currentStage === "results") {
+        if (currentPromptIndex === -1 && currentStage === "results") {
           console.error(
             "Attempted to change state from results to respond, but currentPromptIndex isn't set."
           );
@@ -446,8 +442,7 @@ export class Game {
           return;
         }
 
-        const promptIndex =
-          currentPromptIndex === undefined ? 0 : currentPromptIndex + 1;
+        const promptIndex = currentPromptIndex + 1;
         await this.putGameState("currentPromptIndex", promptIndex);
         await this.putGameState(
           "currentPromptId",
@@ -489,8 +484,8 @@ export class Game {
         await this.putGameState("stage", "lobby");
         await this.putGameState("prompts", new Map());
         await this.putGameState("respones", new Map());
-        await this.state.storage.delete("currentPromptId");
-        await this.state.storage.delete("currentPromptIndex");
+        await this.putGameState("currentPromptId", "");
+        await this.putGameState("currentPromptIndex", -1);
 
         this.announce({
           type: "state-lobby",

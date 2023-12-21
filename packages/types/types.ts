@@ -4,8 +4,8 @@ export type InternalGameState = {
   stage: "lobby" | "write" | "respond" | "results";
   players: Map<string, { name: string; secret: string; connected: boolean }>;
   // Map<userId, prompt>
-  currentPromptId: string | undefined;
-  currentPromptIndex: number | undefined;
+  currentPromptId: string;
+  currentPromptIndex: number;
   prompts: Map<string, string>;
   // Map<promptUserId, Map<respondentUserId, selectedUserId>>
   respones: Map<string, Map<string, string>>;
