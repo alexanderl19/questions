@@ -38,8 +38,6 @@
 		"autoprefixer": "10.4.16",
 		"clsx": "2.0.0",
 		"lucide-svelte": "0.299.0",
-		"nanoid": "5.0.4",
-		"nanoid-dictionary": "4.3.0",
 		"p-retry": "6.2.0",
 		"qrcode-generator": "1.4.4",
 		"types": "workspace:*",

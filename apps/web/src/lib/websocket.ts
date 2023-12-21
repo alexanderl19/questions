@@ -1,5 +1,4 @@
-import { dev } from '$app/environment';
-import { PUBLIC_WEBSOCKET_URL } from '$env/static/public';
+import { PUBLIC_WEBSOCKET_URL_WS } from '$env/static/public';
 import type { WebSocketMessageClientToServer, WebSocketMessageServerToClient } from 'types';
 import type z from 'zod';
 import pRetry from 'p-retry';
@@ -8,6 +7,7 @@ export const websocket = (listener: (message: WebSocketMessageServerToClient) =>
 	let webSocket: WebSocket | undefined;
 	let connected = false;
 	let reconnecting = false;
+	let savedId: string | undefined;
 	const controller = new AbortController();
 
 	const close = () => {
@@ -15,8 +15,9 @@ export const websocket = (listener: (message: WebSocketMessageServerToClient) =>
 		webSocket?.close();
 	};
 
-	const connect = () => {
-		webSocket = new WebSocket(dev ? 'ws://localhost:3000/ws' : PUBLIC_WEBSOCKET_URL);
+	const connect = (id: string) => {
+		savedId = id;
+		webSocket = new WebSocket(new URL(id + '/ws', PUBLIC_WEBSOCKET_URL_WS));
 
 		webSocket.onopen = () => {
 			connected = true;
@@ -37,7 +38,8 @@ export const websocket = (listener: (message: WebSocketMessageServerToClient) =>
 				pRetry(
 					async () => {
 						close();
-						connect();
+						if (!savedId) throw controller.abort(new Error('no id'));
+						connect(savedId);
 						await new Promise((resolve) => setTimeout(resolve, 500));
 						if (connected) {
 							return true;

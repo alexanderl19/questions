@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	import Lobby from './Lobby.svelte';
 	import Write from './Write.svelte';
@@ -8,7 +9,7 @@
 	import { connect, stage } from '$lib/client';
 
 	onMount(() => {
-		connect();
+		connect($page.params.id);
 
 		return close;
 	});

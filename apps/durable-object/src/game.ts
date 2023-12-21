@@ -54,7 +54,7 @@ export class Game {
       await this.putGameState("respones", new Map());
     });
 
-    this.app.get("/ws", async (c) => {
+    this.app.get("/:id/ws", async (c) => {
       const upgradeHeader = c.req.header("Upgrade");
       if (upgradeHeader !== "websocket") {
         return c.text("Expected websocket", 400);

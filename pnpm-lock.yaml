@@ -23,6 +23,12 @@ importers:
       hono:
         specifier: 3.11.8
         version: 3.11.8
+      nanoid:
+        specifier: ^5.0.4
+        version: 5.0.4
+      nanoid-dictionary:
+        specifier: ^4.3.0
+        version: 4.3.0
       zod:
         specifier: 3.22.4
         version: 3.22.4
@@ -30,6 +36,9 @@ importers:
       '@cloudflare/workers-types':
         specifier: 4.20231218.0
         version: 4.20231218.0
+      '@types/nanoid-dictionary':
+        specifier: 4.2.3
+        version: 4.2.3
       types:
         specifier: workspace:*
         version: link:../../packages/types
@@ -57,12 +66,6 @@ importers:
       lucide-svelte:
         specifier: 0.299.0
         version: 0.299.0(svelte@4.2.8)
-      nanoid:
-        specifier: 5.0.4
-        version: 5.0.4
-      nanoid-dictionary:
-        specifier: 4.3.0
-        version: 4.3.0
       p-retry:
         specifier: 6.2.0
         version: 6.2.0
