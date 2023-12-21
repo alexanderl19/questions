@@ -40,7 +40,7 @@
 		"lucide-svelte": "0.298.0",
 		"nanoid": "5.0.4",
 		"nanoid-dictionary": "4.3.0",
-		"p-retry": "6.1.0",
+		"p-retry": "6.2.0",
 		"qrcode-generator": "1.4.4",
 		"types": "workspace:*",
 		"zod": "3.22.4"

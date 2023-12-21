@@ -64,8 +64,8 @@ importers:
         specifier: 4.3.0
         version: 4.3.0
       p-retry:
-        specifier: 6.1.0
-        version: 6.1.0
+        specifier: 6.2.0
+        version: 6.2.0
       qrcode-generator:
         specifier: 1.4.4
         version: 1.4.4
@@ -2275,8 +2275,8 @@ packages:
       p-limit: 3.1.0
     dev: true
 
-  /p-retry@6.1.0:
-    resolution: {integrity: sha512-fJLEQ2KqYBJRuaA/8cKMnqhulqNM+bpcjYtXNex2t3mOXKRYPitAJt9NacSf8XAFzcYahSAbKpobiWDSqHSh2g==}
+  /p-retry@6.2.0:
+    resolution: {integrity: sha512-JA6nkq6hKyWLLasXQXUrO4z8BUZGUt/LjlJxx8Gb2+2ntodU/SS63YZ8b0LUTbQ8ZB9iwOfhEPhg4ykKnn2KsA==}
     engines: {node: '>=16.17'}
     dependencies:
       '@types/retry': 0.12.2
