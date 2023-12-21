@@ -1,6 +1,7 @@
 import { websocket } from '$lib/websocket';
 import { writable } from 'svelte/store';
 
+export const secret = writable<string | undefined>();
 export const players = writable<[id: string, name: string][]>([]);
 export const stage = writable<'lobby' | 'write' | 'respond' | 'results'>('lobby');
 export const respond = writable<
@@ -30,6 +31,7 @@ export const { connect, send, close } = websocket((message) => {
 		case 'error':
 			break;
 		case 'hello':
+			secret.set(message.secret);
 			break;
 		case 'reconnect':
 			break;
