@@ -7,6 +7,7 @@ export const nameState = writable<{ joined: boolean }>({ joined: false });
 
 export const players = writable<[id: string, name: string][]>([]);
 export const stage = writable<'lobby' | 'write' | 'respond' | 'results'>('lobby');
+export const writeState = writable<{ promptCount: number }>({ promptCount: 0 });
 export const respond = writable<
 	| {
 			promptId: string;
@@ -52,6 +53,7 @@ export const { connect, send, close } = websocket((message) => {
 			break;
 		case 'state-write':
 			stage.set('write');
+			writeState.set({ promptCount: message.promptCount });
 			break;
 		case 'state-respond':
 			stage.set('respond');
