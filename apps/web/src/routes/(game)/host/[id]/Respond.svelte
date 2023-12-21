@@ -1,16 +1,13 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { answerState } from '$lib/state';
+	import { send, respond } from '$lib/client';
 
 	const next = async () => {
-		await fetch(`/api/games/${$page.params.id}/results`, {
-			method: 'PUT'
-		});
+		send('stage-results', {});
 	};
 </script>
 
-Question: {$answerState.question}
+Question: {$respond?.promptText}
 
-{$answerState.players}
+<!-- {$answerState.players} -->
 
 <button on:click={next}>Next</button>

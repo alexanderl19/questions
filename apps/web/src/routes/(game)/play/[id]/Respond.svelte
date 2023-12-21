@@ -1,14 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { publish } from '$lib/ably';
-	import { answerState } from '$lib/state';
+	import { send, players, respond } from '$lib/client';
 
-	let answer = '';
+	let response = '';
 
 	const submit = async () => {
-		if ($answerState.players.map(([id]) => id).includes(answer)) {
-			const channel = publish.channels.get(`game:${$page.params.id}:send`);
-			await channel.publish('answer', answer);
+		if ($respond) {
+			send('respond', { promptId: $respond.promptId, response });
 		}
 	};
 </script>
@@ -16,11 +13,17 @@
 <div class="card">
 	<form on:submit|preventDefault={submit}>
 		<fieldset>
-			<legend>{$answerState.question}</legend>
+			<legend>{$respond?.promptText}</legend>
 			<div class="options">
-				{#each $answerState.players as [id, name]}
+				{#each $players as [id, name]}
 					<label>
-						<input type="radio" name="contact" value={id} bind:group={answer} on:change={submit} />
+						<input
+							type="radio"
+							name="contact"
+							value={id}
+							bind:group={response}
+							on:change={submit}
+						/>
 						<span>{name}</span>
 					</label>
 				{/each}

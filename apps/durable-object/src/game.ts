@@ -78,6 +78,40 @@ export class Game {
     this.state.acceptWebSocket(ws);
 
     ws.send(serverToClient(await this.getStatePlayers()));
+    const stage = await this.getGameState("stage");
+
+    try {
+      switch (stage) {
+        case "lobby": {
+          break;
+        }
+        case "write": {
+          ws.send(
+            serverToClient({
+              type: "state-write",
+              promptCount: (await this.getGameState("prompts")).size,
+            })
+          );
+          break;
+        }
+        case "respond": {
+          const promptIndex = await this.getGameState("currentPromptIndex");
+          if (promptIndex === undefined) {
+            throw new Error(
+              "Stage set to respond, but currentPromptIndex is not set."
+            );
+          }
+          ws.send(
+            serverToClient(await this.getStateRespondMessage(promptIndex))
+          );
+          break;
+        }
+        case "results": {
+          ws.send(serverToClient(await this.getStateResultsMessage()));
+          break;
+        }
+      }
+    } catch (error) {}
   }
 
   announce(message: WebSocketMessageServerToClient) {
@@ -97,6 +131,59 @@ export class Game {
       .filter(([_id, { connected }]) => connected)
       .map(([id, { name }]) => [id, name]),
   });
+
+  async getPromptByIndex(i: number) {
+    const prompts = await this.getGameState("prompts");
+    const promptsArray = Array.from(prompts.entries());
+
+    return promptsArray[i];
+  }
+
+  async getStateRespondMessage(
+    i: number
+  ): Promise<
+    Extract<WebSocketMessageServerToClient, { type: "state-respond" }>
+  > {
+    const prompts = await this.getGameState("prompts");
+    const promptsArray = Array.from(prompts.entries());
+
+    return {
+      type: "state-respond",
+      promptId: promptsArray[i][0],
+      promptNumber: i,
+      promptText: promptsArray[i][1],
+      promptsRemaining: promptsArray.length - 1 - i,
+      promptCount: promptsArray.length,
+    };
+  }
+
+  async getStateResultsMessage(): Promise<
+    Extract<WebSocketMessageServerToClient, { type: "state-results" }>
+  > {
+    const currentPromptIndex = await this.getGameState("currentPromptIndex");
+    if (currentPromptIndex === undefined) {
+      throw new Error("currentPromptIndex is not set.");
+    }
+    const prompts = await this.getGameState("prompts");
+    const promptsArray = Array.from(prompts.entries());
+
+    const respones = await this.getGameState("respones");
+    const promptId = promptsArray[currentPromptIndex][0];
+
+    const resultsCounts = new Map();
+    respones.get(promptId)?.forEach((value) => {
+      resultsCounts.set(value, (resultsCounts.get(value) ?? 0) + 1);
+    });
+
+    return {
+      type: "state-results",
+      promptId,
+      promptNumber: currentPromptIndex,
+      promptText: promptsArray[currentPromptIndex][1],
+      promptsRemaining: promptsArray.length - 1 - currentPromptIndex,
+      results: Array.from(resultsCounts.entries()),
+    };
+  }
 
   async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
     let parsedMessage: z.infer<typeof WebSocketMessageClientToServer>;
@@ -252,7 +339,7 @@ export class Game {
         break;
       }
       case "respond": {
-        const { promptId, respone } = parsedMessage;
+        const { promptId, response } = parsedMessage;
 
         const id: string | undefined = ws.deserializeAttachment();
         if (!id) {
@@ -279,7 +366,7 @@ export class Game {
         }
 
         const players = await this.getGameState("players");
-        if (!players.has(respone)) {
+        if (!players.has(response)) {
           ws.send(
             serverToClient({
               type: "respond",
@@ -291,10 +378,10 @@ export class Game {
         }
 
         await this.mutateGameState("respones", (old) =>
-          old.set(promptId, (old.get(promptId) ?? new Map()).set(id, respone))
+          old.set(promptId, (old.get(promptId) ?? new Map()).set(id, response))
         );
       }
-      case "stage-write":
+      case "stage-write": {
         if ((await this.getGameState("stage")) === "lobby") {
           await this.putGameState("stage", "write");
           this.announce({
@@ -310,10 +397,63 @@ export class Game {
           );
         }
         break;
-      case "stage-respond":
+      }
+      case "stage-respond": {
+        const currentStage = await this.getGameState("stage");
+        if (!(currentStage === "write" || currentStage === "results")) {
+          ws.send(
+            serverToClient({
+              type: "error",
+              message:
+                "Can only change stage to respond from write or results.",
+            })
+          );
+          return;
+        }
+        const currentPromptIndex =
+          await this.getGameState("currentPromptIndex");
+
+        if (!currentPromptIndex && currentStage === "results") {
+          console.error(
+            "Attempted to change state from results to respond, but currentPromptIndex isn't set."
+          );
+          ws.send(
+            serverToClient({
+              type: "error",
+              message:
+                "Attempted to change state from results to respond, but currentPromptIndex isn't set.",
+            })
+          );
+          return;
+        }
+
+        const promptIndex = currentPromptIndex ? currentPromptIndex + 1 : 0;
+        await this.putGameState("currentPromptIndex", promptIndex);
+        await this.putGameState(
+          "currentPromptId",
+          (await this.getPromptByIndex(promptIndex))[1]
+        );
+        await this.putGameState("stage", "respond");
+
+        this.announce(await this.getStateRespondMessage(promptIndex));
         break;
-      case "stage-results":
+      }
+      case "stage-results": {
+        const currentStage = await this.getGameState("stage");
+        if (currentStage !== "respond") {
+          ws.send(
+            serverToClient({
+              type: "error",
+              message: "Can only change stage to results from respond.",
+            })
+          );
+          return;
+        }
+
+        await this.putGameState("stage", "results");
+        this.announce(await this.getStateResultsMessage());
         break;
+      }
     }
   }
 

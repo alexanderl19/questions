@@ -1,24 +1,26 @@
 <script lang="ts">
-	import { resultsState, players } from '$lib/state';
+	import { result, players } from '$lib/client';
 
-	const totalVotes = $resultsState.results.reduce(
-		(partial, [_, voteCount]) => partial + voteCount,
-		0
-	);
+	let playersMap = new Map($players);
 </script>
 
-<div class="card">
-	<span class="question">{$resultsState.question}</span>
-	<div class="options">
-		{#each $resultsState.results as [player, voteCount]}
-			<div class="option" style:--width="{(voteCount / totalVotes) * 100}%">
-				<span class="label">{$players.get(player)}: {voteCount}</span>
-			</div>
-		{/each}
+{#if $result}
+	{@const sum = $result?.results.reduce((partial, [_, voteCount]) => partial + voteCount, 0)}
+	<div class="card">
+		<span class="question">{$result.promptText}</span>
+		<div class="options">
+			{#each $result.results as [player, voteCount]}
+				<div class="option" style:--width="{(voteCount / sum) * 100}%">
+					<span class="label">{playersMap.get(player)}: {voteCount}</span>
+				</div>
+			{/each}
+		</div>
 	</div>
-</div>
+{/if}
 
 <style lang="scss">
+	@use '../../variables.scss' as variables;
+
 	.card {
 		background-color: var(--mauve-2);
 		border-radius: 24px;

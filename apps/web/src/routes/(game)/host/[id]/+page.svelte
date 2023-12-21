@@ -3,8 +3,8 @@
 
 	import Lobby from './Lobby.svelte';
 	import Write from './Write.svelte';
-	// import Respond from './Respond.svelte';
-	// import Results from './Results.svelte';
+	import Respond from './Respond.svelte';
+	import Results from './Results.svelte';
 	import { connect, stage } from '$lib/client';
 
 	onMount(() => {
@@ -19,9 +19,9 @@
 {:else if $stage === 'write'}
 	<Write />
 {:else if $stage === 'respond'}
-	<!-- <Respond /> -->
+	<Respond />
 {:else if $stage === 'results'}
-	<!-- <Results /> -->
+	<Results />
 {/if}
 
 <style lang="scss">

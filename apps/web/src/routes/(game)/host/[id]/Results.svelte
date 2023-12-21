@@ -1,37 +1,35 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { send, result, players } from '$lib/client';
 	import Button from '$lib/components/Button.svelte';
-	import { resultsState, players } from '$lib/state';
 
-	const totalVotes = $resultsState.results.reduce(
-		(partial, [_, voteCount]) => partial + voteCount,
-		0
-	);
+	let playersMap = new Map($players);
 
 	const next = async () => {
-		await fetch(`/api/games/${$page.params.id}/answer`, {
-			method: 'PUT',
-			body: JSON.stringify({
-				newQuestion: $resultsState.questionNumber + 1
-			})
-		});
+		if ($result?.promptsRemaining === 0) {
+			send('stage-results', {});
+		} else {
+			send('stage-lobby', {});
+		}
 	};
 </script>
 
 <main>
-	<div class="card">
-		<span class="question">{$resultsState.question}</span>
-		<div class="options">
-			{#each $resultsState.results as [player, voteCount]}
-				<div class="option" style:--width="{(voteCount / totalVotes) * 100}%">
-					<span class="label">{$players.get(player)}: {voteCount}</span>
-				</div>
-			{/each}
+	{#if $result}
+		{@const sum = $result?.results.reduce((partial, [_, voteCount]) => partial + voteCount, 0)}
+		<div class="card">
+			<span class="question">{$result.promptText}</span>
+			<div class="options">
+				{#each $result.results as [player, voteCount]}
+					<div class="option" style:--width="{(voteCount / sum) * 100}%">
+						<span class="label">{playersMap.get(player)}: {voteCount}</span>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
-	<div class="next-button">
-		<Button size="medium" color="ruby" on:click={next}>Next</Button>
-	</div>
+		<div class="next-button">
+			<Button size="medium" color="ruby" on:click={next}>Next</Button>
+		</div>
+	{/if}
 </main>
 
 <style lang="scss">

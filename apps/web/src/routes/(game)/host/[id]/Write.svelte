@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { send } from '$lib/client';
 	import Button from '$lib/components/Button.svelte';
 	import { onMount } from 'svelte';
 
-	const end = async () => {};
+	const end = async () => {
+		send('stage-respond', {});
+	};
 
 	let secondsRemaining = 60 * 1.5;
 	onMount(() => {

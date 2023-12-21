@@ -9,6 +9,27 @@ export const playerData = persist(
 );
 export const players = writable<[id: string, name: string][]>([]);
 export const stage = writable<'lobby' | 'write' | 'respond' | 'results'>('lobby');
+export const respond = writable<
+	| {
+			promptId: string;
+			promptNumber: number;
+			promptText: string;
+			promptsRemaining: number;
+			typingCount?: number;
+			promptCount: number;
+	  }
+	| undefined
+>(undefined);
+export const result = writable<
+	| {
+			promptId: string;
+			promptNumber: number;
+			promptText: string;
+			promptsRemaining: number;
+			results: [id: string, count: number][];
+	  }
+	| undefined
+>(undefined);
 
 export const { connect, send, close } = websocket((message) => {
 	switch (message.type) {
@@ -33,8 +54,25 @@ export const { connect, send, close } = websocket((message) => {
 			stage.set('write');
 			break;
 		case 'state-respond':
+			stage.set('respond');
+			respond.set({
+				promptId: message.promptId,
+				promptNumber: message.promptNumber,
+				promptText: message.promptText,
+				promptsRemaining: message.promptsRemaining,
+				typingCount: message.typingCount,
+				promptCount: message.promptCount
+			});
 			break;
 		case 'state-results':
+			stage.set('results');
+			result.set({
+				promptId: message.promptId,
+				promptNumber: message.promptNumber,
+				promptText: message.promptText,
+				promptsRemaining: message.promptsRemaining,
+				results: message.results
+			});
 			break;
 	}
 });

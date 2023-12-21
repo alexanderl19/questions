@@ -4,6 +4,8 @@ export type InternalGameState = {
   stage: "lobby" | "write" | "respond" | "results";
   players: Map<string, { name: string; secret: string; connected: boolean }>;
   // Map<userId, prompt>
+  currentPromptId: string | undefined;
+  currentPromptIndex: number | undefined;
   prompts: Map<string, string>;
   // Map<promptUserId, Map<respondentUserId, selectedUserId>>
   respones: Map<string, Map<string, string>>;
@@ -31,7 +33,7 @@ export const WebSocketMessageClientToServer = z.union([
   z.object({
     type: z.literal("respond"),
     promptId: z.string(),
-    respone: z.string(),
+    response: z.string(),
   }),
   z.object({
     type: z.literal("stage-write"),
@@ -41,6 +43,9 @@ export const WebSocketMessageClientToServer = z.union([
   }),
   z.object({
     type: z.literal("stage-results"),
+  }),
+  z.object({
+    type: z.literal("stage-lobby"),
   }),
 ]);
 
@@ -97,7 +102,7 @@ export type WebSocketMessageServerToClient =
       promptNumber: number;
       promptText: string;
       promptsRemaining: number;
-      typingCount: number;
+      typingCount?: number;
       promptCount: number;
     }
   | {
