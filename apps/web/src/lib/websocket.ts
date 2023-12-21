@@ -2,6 +2,8 @@ import { PUBLIC_WEBSOCKET_URL_WS } from '$env/static/public';
 import type { WebSocketMessageClientToServer, WebSocketMessageServerToClient } from 'types';
 import type z from 'zod';
 import pRetry from 'p-retry';
+import { persist, createLocalStorage, type PersistentStore } from '@macfja/svelte-persistent-store';
+import { get, writable } from 'svelte/store';
 
 export const websocket = (listener: (message: WebSocketMessageServerToClient) => void) => {
 	let webSocket: WebSocket | undefined;
@@ -10,6 +12,8 @@ export const websocket = (listener: (message: WebSocketMessageServerToClient) =>
 	let savedId: string | undefined;
 	const controller = new AbortController();
 
+	let playerData: PersistentStore<{ id: string; secret: string } | undefined> | undefined;
+
 	const close = () => {
 		webSocket === undefined;
 		webSocket?.close();
@@ -17,16 +21,42 @@ export const websocket = (listener: (message: WebSocketMessageServerToClient) =>
 
 	const connect = (id: string) => {
 		savedId = id;
+
+		playerData = persist(
+			writable<{ id: string; secret: string } | undefined>(),
+			createLocalStorage(),
+			'player-data-' + id
+		);
+
 		webSocket = new WebSocket(new URL(id + '/ws', PUBLIC_WEBSOCKET_URL_WS));
 
 		webSocket.onopen = () => {
 			connected = true;
 			reconnecting = false;
 			controller.abort(new Error('connected'));
+
+			if (playerData) {
+				const playerDataValue = get(playerData);
+				if (playerDataValue) {
+					const { id, secret } = playerDataValue;
+					send('reconnect', {
+						id,
+						secret
+					});
+				}
+			}
 		};
 
 		webSocket.onmessage = (event) => {
 			const message: WebSocketMessageServerToClient = JSON.parse(event.data);
+
+			if (message.type === 'hello') {
+				playerData?.set({
+					id: message.id,
+					secret: message.secret
+				});
+			}
+
 			listener(message);
 		};
 
