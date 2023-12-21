@@ -48,10 +48,30 @@ export class Game {
     };
 
     this.state.blockConcurrencyWhile(async () => {
-      await this.putGameState("stage", "lobby");
-      await this.putGameState("players", new Map());
-      await this.putGameState("prompts", new Map());
-      await this.putGameState("respones", new Map());
+      await this.putGameState(
+        "stage",
+        (await this.getGameState("stage")) ?? "lobby"
+      );
+      await this.putGameState(
+        "players",
+        (await this.getGameState("players")) ?? new Map()
+      );
+      await this.putGameState(
+        "prompts",
+        (await this.getGameState("prompts")) ?? new Map()
+      );
+      await this.putGameState(
+        "respones",
+        (await this.getGameState("respones")) ?? new Map()
+      );
+      await this.putGameState(
+        "currentPromptId",
+        await this.getGameState("currentPromptId")
+      );
+      await this.putGameState(
+        "currentPromptIndex",
+        await this.getGameState("currentPromptIndex")
+      );
     });
 
     this.app.get("/:id/ws", async (c) => {
