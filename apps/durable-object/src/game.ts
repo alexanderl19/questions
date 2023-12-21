@@ -380,6 +380,7 @@ export class Game {
         await this.mutateGameState("respones", (old) =>
           old.set(promptId, (old.get(promptId) ?? new Map()).set(id, response))
         );
+        break;
       }
       case "stage-write": {
         if ((await this.getGameState("stage")) === "lobby") {
