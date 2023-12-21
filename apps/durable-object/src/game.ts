@@ -432,7 +432,7 @@ export class Game {
         const currentPromptIndex =
           await this.getGameState("currentPromptIndex");
 
-        if (!currentPromptIndex && currentStage === "results") {
+        if (currentPromptIndex === undefined && currentStage === "results") {
           console.error(
             "Attempted to change state from results to respond, but currentPromptIndex isn't set."
           );
@@ -489,8 +489,8 @@ export class Game {
         await this.putGameState("players", new Map());
         await this.putGameState("prompts", new Map());
         await this.putGameState("respones", new Map());
-        await this.putGameState("currentPromptId", undefined);
-        await this.putGameState("currentPromptIndex", undefined);
+        await this.state.storage.delete("currentPromptId");
+        await this.state.storage.delete("currentPromptIndex");
 
         this.announce({
           type: "state-lobby",
