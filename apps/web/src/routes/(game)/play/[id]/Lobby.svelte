@@ -1,22 +1,45 @@
 <script lang="ts">
-	import { secret, send } from '$lib/client';
-	import Button from '$lib/components/Button.svelte';
+	import { secret, name, nameState, send } from '$lib/client';
+	import StateButton from '$lib/components/StateButton.svelte';
+	import { onDestroy } from 'svelte';
 
-	let name = '';
-
+	let buttonState: 'join' | 'loading' | 'success' | 'rename' = 'join';
+	let successIndicatorTimeout: NodeJS.Timeout;
 	const join = () => {
-		send('hello', { name, secret: $secret });
+		if (buttonState === 'join') buttonState = 'loading';
+		send('hello', { name: $name, secret: $secret });
 	};
+
+	$: {
+		clearTimeout(successIndicatorTimeout);
+		if ($nameState.joined) {
+			buttonState = 'success';
+			successIndicatorTimeout = setTimeout(() => {
+				buttonState = 'rename';
+			}, 1500);
+		}
+	}
+
+	onDestroy(() => successIndicatorTimeout && clearTimeout(successIndicatorTimeout));
 </script>
 
 <div class="card">
 	<form on:submit|preventDefault={join}>
 		<label>
 			<span>Name</span>
-			<input bind:value={name} />
+			<input bind:value={$name} />
 		</label>
 		<div class="submit">
-			<Button color="ruby" size="medium">Join</Button>
+			<StateButton
+				color={buttonState === 'rename' ? 'mauve' : 'ruby'}
+				state={buttonState === 'join' || buttonState === 'rename' ? 'action' : buttonState}
+			>
+				{#if buttonState === 'join'}
+					Join
+				{:else if buttonState === 'rename'}
+					Change Name
+				{/if}
+			</StateButton>
 		</div>
 	</form>
 </div>
@@ -25,11 +48,10 @@
 	.card {
 		background-color: var(--mauve-3);
 		border-radius: 24px;
+		overflow: hidden;
 	}
 
 	form {
-		margin-bottom: 12px;
-
 		label {
 			display: block;
 			padding: 32px 24px 24px 24px;
@@ -51,9 +73,7 @@
 		}
 
 		.submit {
-			padding: 0 12px;
 			--width: 100%;
-			--border-radius: calc(24px - 12px);
 		}
 	}
 </style>
