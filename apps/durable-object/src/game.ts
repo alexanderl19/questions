@@ -446,7 +446,8 @@ export class Game {
           return;
         }
 
-        const promptIndex = currentPromptIndex ? currentPromptIndex + 1 : 0;
+        const promptIndex =
+          currentPromptIndex === undefined ? 0 : currentPromptIndex + 1;
         await this.putGameState("currentPromptIndex", promptIndex);
         await this.putGameState(
           "currentPromptId",
