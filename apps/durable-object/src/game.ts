@@ -454,6 +454,30 @@ export class Game {
         this.announce(await this.getStateResultsMessage());
         break;
       }
+      case "stage-lobby": {
+        const currentStage = await this.getGameState("stage");
+        if (currentStage !== "results") {
+          ws.send(
+            serverToClient({
+              type: "error",
+              message: "Can only change stage to lobby from results.",
+            })
+          );
+          return;
+        }
+
+        await this.putGameState("stage", "lobby");
+        await this.putGameState("players", new Map());
+        await this.putGameState("prompts", new Map());
+        await this.putGameState("respones", new Map());
+        await this.putGameState("currentPromptId", undefined);
+        await this.putGameState("currentPromptIndex", undefined);
+
+        this.announce({
+          type: "state-lobby",
+        });
+        break;
+      }
     }
   }
 

@@ -112,4 +112,7 @@ export type WebSocketMessageServerToClient =
       promptText: string;
       promptsRemaining: number;
       results: [id: string, count: number][];
+    }
+  | {
+      type: "state-lobby";
     };
