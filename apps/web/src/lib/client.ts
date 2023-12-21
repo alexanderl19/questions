@@ -74,5 +74,8 @@ export const { connect, send, close } = websocket((message) => {
 				results: message.results
 			});
 			break;
+		case 'state-lobby':
+			stage.set('lobby');
+			break;
 	}
 });
