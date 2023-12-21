@@ -64,14 +64,12 @@ export class Game {
         "respones",
         (await this.getGameState("respones")) ?? new Map()
       );
-      await this.putGameState(
-        "currentPromptId",
-        await this.getGameState("currentPromptId")
-      );
-      await this.putGameState(
-        "currentPromptIndex",
-        await this.getGameState("currentPromptIndex")
-      );
+      const currentPromptId = await this.getGameState("currentPromptId");
+      if (currentPromptId)
+        await this.putGameState("currentPromptId", currentPromptId);
+      const currentPromptIndex = await this.getGameState("currentPromptIndex");
+      if (currentPromptIndex)
+        await this.putGameState("currentPromptIndex", currentPromptIndex);
     });
 
     this.app.get("/:id/ws", async (c) => {
