@@ -313,7 +313,7 @@ export class Game {
               name: player.name,
             })
           );
-          this.mutateGameState("players", async (old) =>
+          await this.mutateGameState("players", async (old) =>
             old.set(id, {
               name: player.name,
               secret: player.secret,
