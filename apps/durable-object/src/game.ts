@@ -487,7 +487,6 @@ export class Game {
         }
 
         await this.putGameState("stage", "lobby");
-        await this.putGameState("players", new Map());
         await this.putGameState("prompts", new Map());
         await this.putGameState("respones", new Map());
         await this.state.storage.delete("currentPromptId");
