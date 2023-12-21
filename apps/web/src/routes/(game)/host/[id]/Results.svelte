@@ -6,9 +6,9 @@
 
 	const next = async () => {
 		if ($result?.promptsRemaining === 0) {
-			send('stage-results', {});
-		} else {
 			send('stage-lobby', {});
+		} else {
+			send('stage-respond', {});
 		}
 	};
 </script>
