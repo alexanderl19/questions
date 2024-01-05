@@ -34,7 +34,7 @@
 	"dependencies": {
 		"@macfja/svelte-persistent-store": "2.4.1",
 		"@radix-ui/colors": "3.0.0",
-		"@upstash/redis": "1.27.1",
+		"@upstash/redis": "1.28.0",
 		"autoprefixer": "10.4.16",
 		"clsx": "2.1.0",
 		"lucide-svelte": "0.304.0",
