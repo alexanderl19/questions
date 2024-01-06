@@ -64,8 +64,8 @@ importers:
         specifier: 2.1.0
         version: 2.1.0
       lucide-svelte:
-        specifier: 0.305.0
-        version: 0.305.0(svelte@4.2.8)
+        specifier: 0.306.0
+        version: 0.306.0(svelte@4.2.8)
       p-retry:
         specifier: 6.2.0
         version: 6.2.0
@@ -2026,8 +2026,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /lucide-svelte@0.305.0(svelte@4.2.8):
-    resolution: {integrity: sha512-8YIPW4nVxGl9xUWNd/u4UScswJkZ9OuAqT+8e2fwyVYCRDDXanGPzjJSarFNbLDhT6UZJxJQ7dsqzPsK4tDX4A==}
+  /lucide-svelte@0.306.0(svelte@4.2.8):
+    resolution: {integrity: sha512-Jd2KK7FHsx60wRwanL750JilaXyR4Tbwh7RmqcG3sda/SG7hPWWbMqqpAz4d97+D1Qj0FMzTmCCNjSPZykSTJA==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
