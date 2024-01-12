@@ -8,7 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
-    "hono": "3.12.2",
+    "hono": "3.12.3",
     "nanoid": "5.0.4",
     "nanoid-dictionary": "4.3.0",
     "zod": "3.22.4"
