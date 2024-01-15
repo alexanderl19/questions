@@ -21,8 +21,8 @@ importers:
         specifier: 2.2.2
         version: 2.2.2
       hono:
-        specifier: 3.12.3
-        version: 3.12.3
+        specifier: 3.12.4
+        version: 3.12.4
       nanoid:
         specifier: 5.0.4
         version: 5.0.4
@@ -1868,8 +1868,8 @@ packages:
     resolution: {integrity: sha512-8Rf9Y83NBReMnx0gFzA8JImQACstCYWUplepDa9xprwwtmgEZUF0h/i5xSA625zB/I37EtrswSST6OXxwaaIJQ==}
     dev: true
 
-  /hono@3.12.3:
-    resolution: {integrity: sha512-eymmA0t4YzoBlaZhfcJiR6wC9tIdIgx68fdHYCpbKf0RMYXux+uJjwuZSAa2pKPNXZd6K6oGgizqaiLDvQ5jzg==}
+  /hono@3.12.4:
+    resolution: {integrity: sha512-tEkoBCmhMoQdnBJ3hNUZm9UVA6XkSm6YaPxN8xMaKvz062KhYnd52s/GbmxFywO0vsb+T+wjaJ0708NY7Tr1VA==}
     engines: {node: '>=16.0.0'}
     dev: false
 
