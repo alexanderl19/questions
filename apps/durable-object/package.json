@@ -9,7 +9,7 @@
   "dependencies": {
     "@paralleldrive/cuid2": "2.2.2",
     "hono": "3.12.9",
-    "nanoid": "5.0.4",
+    "nanoid": "5.0.5",
     "nanoid-dictionary": "4.3.0",
     "zod": "3.22.4"
   },
