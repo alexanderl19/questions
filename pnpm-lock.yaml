@@ -80,8 +80,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@svelte-put/movable':
-        specifier: 3.1.0
-        version: 3.1.0
+        specifier: 3.2.0
+        version: 3.2.0
       '@sveltejs/adapter-vercel':
         specifier: 3.1.0
         version: 3.1.0(@sveltejs/kit@1.30.4)
@@ -807,8 +807,8 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@svelte-put/movable@3.1.0:
-    resolution: {integrity: sha512-zOKNoVMaLO9AyiS6ER6LCKaE44ELZqMPH2U8wySO4n8fC5JLcu7XjD4cpGf6bOJuMS0F4edfdI11w4V975fYUA==}
+  /@svelte-put/movable@3.2.0:
+    resolution: {integrity: sha512-y9w4zFSpkZan84dEKLDXr+75eFH0gQLl9/ey36w5YSNcvA202WJgYZsav1IReAm5jPxeL3Q89wzlBr4jhuK0cA==}
     dev: true
 
   /@sveltejs/adapter-vercel@3.1.0(@sveltejs/kit@1.30.4):
