@@ -113,14 +113,14 @@ importers:
         specifier: 3.1.2
         version: 3.1.2(prettier@3.1.1)(svelte@4.2.11)
       sass:
-        specifier: 1.70.0
-        version: 1.70.0
+        specifier: 1.71.0
+        version: 1.71.0
       svelte:
         specifier: 4.2.11
         version: 4.2.11
       svelte-check:
         specifier: 3.6.4
-        version: 3.6.4(postcss@8.4.31)(sass@1.70.0)(svelte@4.2.11)
+        version: 3.6.4(postcss@8.4.31)(sass@1.71.0)(svelte@4.2.11)
       tslib:
         specifier: 2.6.2
         version: 2.6.2
@@ -129,7 +129,7 @@ importers:
         version: 5.3.3
       vite:
         specifier: 4.5.2
-        version: 4.5.2(sass@1.70.0)
+        version: 4.5.2(sass@1.71.0)
 
   packages/types:
     devDependencies:
@@ -847,7 +847,7 @@ packages:
       svelte: 4.2.11
       tiny-glob: 0.2.9
       undici: 5.28.3
-      vite: 4.5.2(sass@1.70.0)
+      vite: 4.5.2(sass@1.71.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -863,7 +863,7 @@ packages:
       '@sveltejs/vite-plugin-svelte': 2.5.3(svelte@4.2.11)(vite@4.5.2)
       debug: 4.3.4
       svelte: 4.2.11
-      vite: 4.5.2(sass@1.70.0)
+      vite: 4.5.2(sass@1.71.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -882,7 +882,7 @@ packages:
       magic-string: 0.30.5
       svelte: 4.2.11
       svelte-hmr: 0.15.3(svelte@4.2.11)
-      vite: 4.5.2(sass@1.70.0)
+      vite: 4.5.2(sass@1.71.0)
       vitefu: 0.2.5(vite@4.5.2)
     transitivePeerDependencies:
       - supports-color
@@ -2576,8 +2576,8 @@ packages:
       rimraf: 2.7.1
     dev: true
 
-  /sass@1.70.0:
-    resolution: {integrity: sha512-uUxNQ3zAHeAx5nRFskBnrWzDUJrrvpCPD5FNAoRvTi0WwremlheES3tg+56PaVtCs5QDRX5CBLxxKMDJMEa1WQ==}
+  /sass@1.71.0:
+    resolution: {integrity: sha512-HKKIKf49Vkxlrav3F/w6qRuPcmImGVbIXJ2I3Kg0VMA+3Bav+8yE9G5XmP5lMj6nl4OlqbPftGAscNaNu28b8w==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -2742,7 +2742,7 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check@3.6.4(postcss@8.4.31)(sass@1.70.0)(svelte@4.2.11):
+  /svelte-check@3.6.4(postcss@8.4.31)(sass@1.71.0)(svelte@4.2.11):
     resolution: {integrity: sha512-mY/dqucqm46p72M8yZmn81WPZx9mN6uuw8UVfR3ZKQeLxQg5HDGO3HHm5AZuWZPYNMLJ+TRMn+TeN53HfQ/vsw==}
     hasBin: true
     peerDependencies:
@@ -2755,7 +2755,7 @@ packages:
       picocolors: 1.0.0
       sade: 1.8.1
       svelte: 4.2.11
-      svelte-preprocess: 5.1.2(postcss@8.4.31)(sass@1.70.0)(svelte@4.2.11)(typescript@5.3.3)
+      svelte-preprocess: 5.1.2(postcss@8.4.31)(sass@1.71.0)(svelte@4.2.11)(typescript@5.3.3)
       typescript: 5.3.3
     transitivePeerDependencies:
       - '@babel/core'
@@ -2795,7 +2795,7 @@ packages:
       svelte: 4.2.11
     dev: true
 
-  /svelte-preprocess@5.1.2(postcss@8.4.31)(sass@1.70.0)(svelte@4.2.11)(typescript@5.3.3):
+  /svelte-preprocess@5.1.2(postcss@8.4.31)(sass@1.71.0)(svelte@4.2.11)(typescript@5.3.3):
     resolution: {integrity: sha512-XF0aliMAcYnP4hLETvB6HRAMnaL09ASYT1Z2I1Gwu0nz6xbdg/dSgAEthtFZJA4AKrNhFDFdmUDO+H9d/6xg5g==}
     engines: {node: '>= 14.10.0'}
     requiresBuild: true
@@ -2837,7 +2837,7 @@ packages:
       detect-indent: 6.1.0
       magic-string: 0.27.0
       postcss: 8.4.31
-      sass: 1.70.0
+      sass: 1.71.0
       sorcery: 0.11.0
       strip-indent: 3.0.0
       svelte: 4.2.11
@@ -3028,7 +3028,7 @@ packages:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: true
 
-  /vite@4.5.2(sass@1.70.0):
+  /vite@4.5.2(sass@1.71.0):
     resolution: {integrity: sha512-tBCZBNSBbHQkaGyhGCDUGqeo2ph8Fstyp6FMSvTtsXeZSPpSMGlviAOav2hxVTqFcx8Hj/twtWKsMJXNY0xI8w==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -3059,7 +3059,7 @@ packages:
       esbuild: 0.18.20
       postcss: 8.4.31
       rollup: 3.29.4
-      sass: 1.70.0
+      sass: 1.71.0
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
@@ -3072,7 +3072,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.5.2(sass@1.70.0)
+      vite: 4.5.2(sass@1.71.0)
     dev: true
 
   /webidl-conversions@3.0.1:
