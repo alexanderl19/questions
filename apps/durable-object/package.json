@@ -17,6 +17,6 @@
     "@cloudflare/workers-types": "4.20240222.0",
     "@types/nanoid-dictionary": "4.2.3",
     "types": "workspace:*",
-    "wrangler": "3.29.0"
+    "wrangler": "3.39.0"
   }
 }
