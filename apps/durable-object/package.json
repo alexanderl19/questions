@@ -11,7 +11,7 @@
     "hono": "4.2.3",
     "nanoid": "5.0.7",
     "nanoid-dictionary": "4.3.0",
-    "zod": "3.22.4"
+    "zod": "3.22.5"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "4.20240405.0",
