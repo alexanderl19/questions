@@ -49,8 +49,8 @@ importers:
   apps/web:
     dependencies:
       '@macfja/svelte-persistent-store':
-        specifier: 2.4.1
-        version: 2.4.1(svelte@4.2.19)
+        specifier: 2.4.2
+        version: 2.4.2(svelte@4.2.19)
       '@radix-ui/colors':
         specifier: 3.0.0
         version: 3.0.0
@@ -731,10 +731,10 @@ packages:
     resolution: {integrity: sha512-kqEg3Zu5/g3ivdeb+jP4rBVVdmtKXVsRwH+x9KdM2Y7d2mKLq54g+YLSgTQ4KwJvWmyHFvRq0ouX5Dr4H1Hw3Q==}
     dev: false
 
-  /@macfja/svelte-persistent-store@2.4.1(svelte@4.2.19):
-    resolution: {integrity: sha512-VlGtRCJcASmFeVRXm4rbncoM+llnbeJ8C0bzimhARCGi6zKxGncRFLeUVwtjcDW5uNfiJJUK8mzEhXBxeP8fbg==}
+  /@macfja/svelte-persistent-store@2.4.2(svelte@4.2.19):
+    resolution: {integrity: sha512-ZAcWJcCnfZDIiy77Aoj9KQ6qDt6UmRZgUM3UHjmOY1IRf0SirDl1WgBFlVUMynRLERy4/EgZtWPqAMnh3cbCRA==}
     peerDependencies:
-      svelte: ^3.0 || ^4.0
+      svelte: ^3.0 || ^4.0 || ^5.0
     dependencies:
       '@macfja/serializer': 1.1.2
       browser-cookies: 1.2.0
