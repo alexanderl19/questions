@@ -14,7 +14,7 @@
     "zod": "3.22.5"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20240512.0",
+    "@cloudflare/workers-types": "4.20241218.0",
     "@types/nanoid-dictionary": "4.2.3",
     "types": "workspace:*",
     "wrangler": "3.53.1"
